@@ -1,13 +1,13 @@
-name: CI/CD Anitech Main
+name: CI/CD Anitech Devlopment
 
 on:
   push:
     branches:
-      - deploy
+      - development
   pull_request:
     types: [closed]
     branches:
-      - deploy
+      - development
 
 jobs:
   deploy:
@@ -24,9 +24,9 @@ jobs:
           command_timeout: 30m
           script: |
               cd ~/anitech-general
-              git fetch origin deploy
-              git reset --hard origin/deploy
+              git fetch origin development
+              git reset --hard origin/development
               docker compose down
-              docker compose build --no-cache   # ← tambah ini
+              docker compose build 
               docker compose up -d
               docker image prune -f
