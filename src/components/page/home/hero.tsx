@@ -11,7 +11,7 @@ function Hero() {
     >
       <div className='absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-[#BCC7E0]/20 to-[#2E9CA7]/20 -z-10 pointer-events-none'></div>
       <SectionTitle
-        title='Transformasi digital <br> dimulai dari sini'
+        title='Transformer digital <br> dimulai dari sini'
         className='text-center'
       />
       <Description

@@ -1,0 +1,23 @@
+name: CI/CD Anitech Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploying to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            cd ~/anitech-general
+            git pull origin main
+            docker compose up -d --build anitech-general-web
+            docker image prune -f
