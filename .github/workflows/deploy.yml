@@ -1,13 +1,13 @@
-name: CI/CD Anitech Devlopment
+name: CI/CD Anitech Staging
 
 on:
   push:
     branches:
-      - development
+      - staging
   pull_request:
     types: [closed]
     branches:
-      - development
+      - staging
 
 jobs:
   deploy:
@@ -24,8 +24,8 @@ jobs:
           command_timeout: 30m
           script: |
               cd ~/anitech-general
-              git fetch origin development
-              git reset --hard origin/development
+              git fetch origin staging
+              git reset --hard origin/staging
               docker compose down
               docker compose build 
               docker compose up -d
