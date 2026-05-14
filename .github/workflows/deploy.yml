@@ -3,7 +3,7 @@ name: CI/CD Anitech Main
 on:
   push:
     branches:
-      - main
+      - deploy
 
 jobs:
   deploy:
@@ -18,6 +18,6 @@ jobs:
           port: 22
           script: |
             cd ~/anitech-general
-            git pull origin main
+            git pull origin deploy
             docker compose up -d --build anitech-general-web
             docker image prune -f
