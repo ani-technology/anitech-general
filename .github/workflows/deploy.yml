@@ -18,6 +18,10 @@ jobs:
           port: 22
           script: |
             cd ~/anitech-general
-            git pull origin deploy
-            docker compose up -d --build anitech-general-web
+            git fetch origin deploy
+            git reset --hard origin/deploy
+            # Paksa matikan container lama (termasuk yang unhealthy)
+            docker compose down 
+            # Bangun ulang dan jalankan yang baru
+            docker compose up -d --build
             docker image prune -f
