@@ -8,6 +8,8 @@ const getPoppins = Poppins({
   variable: '--font-poppins',
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+  preload: false,  // ← ini yang penting
 });
 
 export const metadata: Metadata = {
