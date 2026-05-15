@@ -25,10 +25,18 @@ import { TbMessageFilled } from 'react-icons/tb';
 import { useState } from 'react';
 import axios from 'axios';
 
+type ContactFormValues = {
+  name: string;
+  email: string;
+  phone: string;
+  subject: string;
+  message: string;
+};
+
 const ContactForms = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<string | null>(null);
-  const form = useForm({
+  const form = useForm<ContactFormValues>({
     defaultValues: {
       name: '',
       email: '',
@@ -38,14 +46,20 @@ const ContactForms = () => {
     },
   });
 
-  const onSubmit = async (values: unknown) => {
+  const onSubmit = async (values: ContactFormValues) => {
     setIsLoading(true);
 
     try {
-      const res = await axios.post('/api/send', values);
+      await axios.post('/api/send', values);
       setResponse('Pesanmu Berhasil Dikirim');
-    } catch (error: any) {
-      console.error('Error:', error.response?.data || error.message);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error:', error.response?.data || error.message);
+      } else if (error instanceof Error) {
+        console.error('Error:', error.message);
+      } else {
+        console.error('Error: Unknown error');
+      }
       setResponse('Gagal mengirim pesan');
     } finally {
       setIsLoading(false);
