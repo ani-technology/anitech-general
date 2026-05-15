@@ -1,4 +1,3 @@
-import MemberCard from '@/components/micro/MemberCard';
 import Faq from '@/components/page/home/faq';
 import Hero from '@/components/page/home/hero';
 import Inovation from '@/components/page/home/inovation';
@@ -14,24 +13,6 @@ export const metadata = {
     icon: '/img/logo.png',
   },
 };
-
-const test = [
-  {
-    img: '/img/bahlil.png',
-    name: 'Bahlil Swarawisesa Erliarto Putra',
-    division: 'Pimpinan Tim LGP 3KG',
-  },
-  {
-    img: '/img/bahlil.png',
-    name: 'Bahlil Swarawisesa Erliarto Putra',
-    division: 'Pimpinan Tim LGP 3KG',
-  },
-  {
-    img: '/img/bahlil.png',
-    name: 'Bahlil Swarawisesa Erliarto Putra',
-    division: 'Pimpinan Tim LGP 3KG',
-  },
-];
 
 export default function Home() {
   return (

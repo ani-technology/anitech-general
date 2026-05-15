@@ -3,7 +3,6 @@
 import Description from '@/components/micro/Description';
 import ImageComponent from '@/components/micro/ImageComponent';
 import SectionTitle from '@/components/micro/SectionTitle';
-import { useRouter } from 'next/navigation';
 
 export default function NotFound() {
   return (

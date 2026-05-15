@@ -38,6 +38,7 @@ function EmployeeList() {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
+  if (notFound) return <p>Data karyawan tidak ditemukan.</p>;
 
   return (
     <div className='flex justify-center gap-20 px-5 sm:px-10 lg:px-20 xl:px-40'>
