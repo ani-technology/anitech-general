@@ -1,8 +1,6 @@
 services:
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/aniteknologi/anitech-general:production-latest
     ports:
       - "3368:3368"
     environment:

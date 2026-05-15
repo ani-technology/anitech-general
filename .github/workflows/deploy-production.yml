@@ -1,0 +1,94 @@
+name: CI/CD Production
+
+on:
+  push:
+    branches: [production]
+  pull_request:
+    types: [closed]
+    branches: [production]
+
+env:
+  IMAGE_NAME: ghcr.io/aniteknologi/anitech-general
+
+jobs:
+  # ─────────────────────────────────────────
+  # JOB 1: Build image dan push ke GHCR
+  # ─────────────────────────────────────────
+  build:
+    name: Build & Push Image
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build & Push image to GHCR
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.IMAGE_NAME }}:production-latest
+            ${{ env.IMAGE_NAME }}:production-${{ github.sha }}
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:production-cache
+          cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:production-cache,mode=max
+
+  # ─────────────────────────────────────────
+  # JOB 2: Manual approval gate
+  # Aktifkan di: Settings → Environments → production
+  # Tambahkan Required reviewers = username kamu
+  # ─────────────────────────────────────────
+  approval:
+    name: Waiting for Approval
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production  # <-- ini yang trigger approval gate
+
+    steps:
+      - name: Approved - proceeding to deploy
+        run: echo "✅ Production deployment approved!"
+
+  # ─────────────────────────────────────────
+  # JOB 3: Deploy ke server production
+  # ─────────────────────────────────────────
+  deploy:
+    name: Deploy to Production
+    needs: approval
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - name: Deploy to Production Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST_PROD }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          command_timeout: 10m
+          script: |
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            cd ~/anitech-general
+            git fetch origin production
+            git reset --hard origin/production
+            docker pull ghcr.io/aniteknologi/anitech-general:production-latest
+            docker compose down
+            docker compose up -d
+            docker image prune -f
+            echo "🚀 Production deployed successfully!"
+            echo "Commit: ${{ github.sha }}"
