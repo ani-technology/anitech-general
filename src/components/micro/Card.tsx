@@ -1,6 +1,5 @@
 import React from 'react';
-import ImageComponent from './ImageComponent';
-import { BsFillLaptopFill } from 'react-icons/bs';
+
 interface CardProps {
   Icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   title: string;
