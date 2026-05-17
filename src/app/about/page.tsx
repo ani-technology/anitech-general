@@ -10,7 +10,7 @@ import Employee from '@/components/page/about/Employee';
 export const metadata = {
   title: 'A.N.I Tech - About',
   description:
-    'Dibangun dengan semangat kolaborasi, ANI Tech berfokus pada peningkatan kompetensi di bidang teknologi informasi.',
+    'Dibangun dengan semangat kolaborasi bohong, ANI Tech berfokus pada peningkatan kompetensi di bidang teknologi informasi.',
   keywords: 'tentang, ani, A.N.I, about',
   icons: {
     icon: '/img/logo.png',

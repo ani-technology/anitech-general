@@ -39,13 +39,13 @@ jobs:
           host: ${{ secrets.SSH_HOST_PROD }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          command_timeout: 10m
+          command_timeout: 15m
           script: |
             cd ~/anitech-general
             git fetch origin production
             git reset --hard origin/production
             docker compose down
             docker compose build --no-cache
-            docker compose up -d
+            docker compose up -d --wait --wait-timeout 120
             docker image prune -f
             echo "🚀 Production deployed!"
