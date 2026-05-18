@@ -6,7 +6,7 @@ on:
   pull_request:
     types: [closed]
     branches: [production]
-
+  workflow_dispatch:  
 jobs:
   build:
     name: Build Check
@@ -36,7 +36,7 @@ jobs:
       - name: Deploy to Production Server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SSH_HOST_PROD }}
+          host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           command_timeout: 10m
